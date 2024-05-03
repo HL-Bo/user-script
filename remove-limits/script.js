@@ -162,7 +162,6 @@
     // 对抗延迟运行（即在此脚本执行后运行）的禁用程序和循环执行的禁用程序，
     setInterval( // 每 0.2 秒执行一次。
         (function () {
-            'use strict';
             if (document) {
                 try { allowElement(document); } catch (error) { } finally { }
             }
@@ -170,7 +169,6 @@
     );
     setInterval( // 每 0.3 秒执行一次。
         (function () {
-            'use strict';
             if (document) {
                 try { allowElement(document.body); } catch (error) { } finally { }
             }
@@ -178,7 +176,6 @@
     );
     setInterval( // 每 0.5 秒执行一次。
         (function () {
-            'use strict';
             let mce = getMainContainerElement()
             if (document && mce) {
                 try { allowElement(mce); } catch (error) { } finally { }
@@ -194,7 +191,6 @@
             setInterval(
                 // 每 2 秒执行一次。
                 function () {
-                    'use strict';
                     if (document) {
                         // 移除正文中的不可见元素
                         try {
