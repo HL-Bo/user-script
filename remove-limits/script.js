@@ -3,6 +3,8 @@
 // @name:zh-CN           解除网页限制，恢复默认行为
 // @name:en-US           Remove Restrictions and Restore Default Behavior
 // @namespace            http://hl-bo.github.io/namespaces/user-script/remove-limits
+// @source               https://github.com/HL-Bo/user-script
+// @supportURL           https://github.com/HL-Bo/user-script/issues
 // @version              2.1
 // @license              AGPLv3
 // @description          Allows you select, cut, copy, paste, save and open the DevTools on any website.
