@@ -1,0 +1,6 @@
+{
+    "editor.maxTokenizationLineLength": 20000,
+    "[javascript]": {
+        "editor.maxTokenizationLineLength": 10000
+    }
+}
