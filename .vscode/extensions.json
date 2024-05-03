@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "streetsidesoftware.code-spell-checker",
+        "davidanson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
+        "bierner.github-markdown-preview",
+        "mhutchie.git-graph"
+    ]
+}
