@@ -17,15 +17,19 @@
 ## 未实现的功能
 
 - 此脚本不包含图像识别（OCR）功能，所以对于通过将文本转换为图像从而实现禁用复制的网页无效。
-- 此脚本的禁用 [debugger](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/debugger) 的相关功能尚不完善，所以对于循环执行debugger从而实现禁用开发者工具的网页可能无效。
+- 此脚本的禁用 [`debugger`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/debugger) 的相关功能尚不完善，所以对于循环执行debugger从而实现禁用开发者工具的网页可能无效。
 - 此脚本的样式审查功能尚不完善，所以对于插入不可见的文本从而实现文本混淆的网页可能无效。
 - 此脚本暂时不包含字体分析功能，所以对于对文本编码和字形进行重映射从而实现文本混淆的网页无效。
 
 ## 关于此脚本
 
-如此脚本有任何其他上文未说明的问题或对此脚本有任何的意见或建议，请[向作者反馈](mailto:HL-Bo<hl-bo@outlook.com>?cc=EMail%20Robot%20of%20HL-Bo<hl_bot@163.com>&subject=Comments%20or%20Suggestions%20for%20user-script%2fremove-limits "发送关于此脚本的意见或建议")。
+如此脚本有任何其他上文未说明的问题或对此脚本有任何的意见或建议，无法或者不愿在存储库中公开提出的，可以通过电子邮件[向作者反馈](mailto:HL-Bo<hl-bo@outlook.com>?cc=EMail%20Robot%20of%20HL-Bo<hl_bot@163.com>&subject=Comments%20or%20Suggestions%20for%20user-script%2fremove-limits "发送关于此脚本的意见或建议")。
 
 欢迎参与此脚本的开发，完善此脚本并（或）为此脚本添加新的功能。
+
+此脚本的存储库位于 [GitHub](https://github.com/HL-Bo/user-script)，其镜像位于 [Codeberg](https://codeberg.org/HL-Bo/user-script)。如有需要，请向位于 GitHub 上的存储库提交 [Issues](https://github.com/HL-Bo/user-script/issues) 和（或） [Pull Requests](https://github.com/HL-Bo/user-script/pulls)，镜像存储库的相关内容可能无法被及时发现、充分讨论和审查。此外，请注意存储库要求[对提交进行签名](https://docs.github.com/zh/authentication/managing-commit-signature-verification/signing-commits)。
+
+此脚本的活跃开发分支暂定为 `feature/remove-limits`，请将代码合并申请指向此分支而非 `develop` 分支。
 
 ## 授权与许可
 
