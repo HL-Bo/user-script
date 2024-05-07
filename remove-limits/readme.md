@@ -12,7 +12,7 @@
 
 如有以上问题，请尝试禁用该脚本以恢复正常的使用，并[联系作者](mailto:HL-Bo<hl-bo@outlook.com>?cc=EMail%20Robot%20of%20HL-Bo<hl_bot@163.com>&subject=Application%20of%20Adding%20An%20Exclusion%20Rule%20for%20user-script%2fremove-limits "发送关于将某页面添加至此脚本排除名单的申请")将相应的站点添加至排除名单。
 
-脚本在启用了框架的页面中可能被多次注入并运行，如有必要，请转至用户脚本管理器关于该脚本的设置页面并将“仅在顶层页面（框架）运行”（或类似选项）设置为“是”。
+在某些情况下，脚本可能无法按照预期工作，如遇相关问题，请[向作者反馈](mailto:HL-Bo<hl-bo@outlook.com>?cc=EMail%20Robot%20of%20HL-Bo<hl_bot@163.com>&subject=Exception%20Reporting%20of%20user-script%2fremove-limits "发送脚本无法按照预期工作的报告")。
 
 此外，脚本仅在用户脚本管理插件（如 [Greasemonkey](https://www.greasespot.net/ "油猴")，[Tampermonkey](https://www.tampermonkey.net/ "篡改猴") 以及 [Violentmonkey](https://violentmonkey.github.io/ "暴力猴")）已安装、启用并可修改页面时有效。
 
