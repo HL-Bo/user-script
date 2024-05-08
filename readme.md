@@ -1,6 +1,6 @@
 # User Script
 
-> Bo 的用户脚本存储库。
+> *Bo 的用户脚本存储库。*
 
 此处的脚本适用于 [Greasemonkey](https://www.greasespot.net/ "油猴")、[Tampermonkey](https://www.tampermonkey.net/ "篡改猴")、[Violentmonkey](https://violentmonkey.github.io/ "暴力猴") 等用户脚本管理器。其中的部分脚本已发布至 [Greasy Fork](https://greasyfork.org/)。
 
@@ -21,7 +21,7 @@
 
 | 脚本 | 说明 | Greasy Fork |
 | :--- | :--- | ---: |
-| [remove-limits](/remove-limits/script.js) | [解除网页限制，恢复默认行为](/remove-limits/readme.md) | [493959](https://greasyfork.org/zh-CN/scripts/493959-remove-restrictions-and-restore-default-behavior) |
+| [remove-limits](/remove-limits/user-script.js) | [解除网页限制，恢复默认行为](/remove-limits/readme.md) | [493959](https://greasyfork.org/zh-CN/scripts/493959-remove-restrictions-and-restore-default-behavior) |
 
 ## 法律信息
 
