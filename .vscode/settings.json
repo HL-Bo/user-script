@@ -2,5 +2,12 @@
     "editor.maxTokenizationLineLength": 20000,
     "[javascript]": {
         "editor.maxTokenizationLineLength": 10000
-    }
+    },
+    "javascript.format.semicolons": "insert",
+    "typescript.format.semicolons": "insert",
+    "cSpell.words": [
+        "Greasemonkey",
+        "Tampermonkey",
+        "Violentmonkey"
+    ]
 }
