@@ -14,7 +14,7 @@
 // @namespace            http://hl-bo.github.io/namespaces/user-script/remove-limits
 // @source               https://github.com/HL-Bo/user-script
 // @supportURL           https://github.com/HL-Bo/user-script/issues
-// @version              2.6
+// @version              2.6.1
 // @license              AGPLv3
 // @description          Block the anti-debugging actions of the web page and reset the processing of certain actions (e.g., select, copy, open developer tools) of the web page to the corresponding browser default behavior.
 // @description:zh-CN    阻止网页的反调试措施并将网页对部分操作（如：选择、复制、打开开发者工具）处理重置为相应的浏览器默认行为。
@@ -109,45 +109,24 @@
         setTimeout(func, 0); // 异步执行，防止阻塞
         setInterval(func, delay);
     };
-    let afterElementLoaded = function (func, element_getter) {
-        if (document && element_getter()) { func(element_getter); } else {
-            window.addEventListener('load ', () => { func(element_getter()); });
-        }
-    };
-    let afterHeadLoaded = function (func) {
-        if (document && document.head) { func(); } else {
-            window.addEventListener('load ', () => { func(); });
-        }
-    };
-    let afterBodyLoaded = function (func) {
-        if (document && document.body) { func(); } else {
-            window.addEventListener('load ', () => { func(); });
-        }
-    };
     let logError = function (error) {
         let error_message = error.toString();
-        afterBodyLoaded(
-            () => {
-                if (document.body.$rl_errors) {
-                    if (!document.body.$rl_errors.includes(error_message)) {
-                        if (in_frame) { console.debug(error_message); } else { console.warn(error_message); }
-                        document.body.$rl_errors.push(error_message);
-                    }
-                } else { document.body.$rl_errors = new Array(); }
-            }
-        );
+        if (document && document.body) {
+            if (document.body.$rl_errors) {
+                if (!document.body.$rl_errors.includes(error_message)) {
+                    if (in_frame) { console.debug(error_message); } else { console.warn(error_message); }
+                    document.body.$rl_errors.push(error_message);
+                }
+            } else { document.body.$rl_errors = new Array(); }
+        }
     };
     let injectStyle = function () {
-        afterHeadLoaded(() => {
-            try {
-                document.head.appendChild(head_style_element);
-            } catch (error) { logError(error); } finally { }
-        });
-        afterBodyLoaded(() => {
-            try {
-                document.body.appendChild(body_style_element);
-            } catch (error) { logError(error); } finally { }
-        });
+        if (document && document.head) {
+            try { document.head.appendChild(head_style_element); } catch (error) { logError(error); } finally { }
+        }
+        if (document && document.body) {
+            try { document.body.appendChild(head_style_element); } catch (error) { logError(error); } finally { }
+        }
     };
     /*
     let getSelection = function () {
@@ -441,33 +420,42 @@
     };
 
     // 对抗延迟运行（即在此脚本执行后运行）的禁用程序和循环执行的禁用程序，
-    executeWithInterval( // 每 0.2 秒执行一次。
+    executeWithInterval(
         (function () {
             if (window) {
                 try { allowElement(window); } catch (error) { logError(error); } finally { }
             }
         }), 200
     );
-    afterBodyLoaded(() => {
-        executeWithInterval(() => {
-            try { allowElement(document); } catch (error) { logError(error); } finally { }
-        }, 200);
-    });
-    afterBodyLoaded(() => {
-        executeWithInterval(() => {
-            try { allowElement(document.body); } catch (error) { logError(error); } finally { }
-        }, 300);
-    });
-    afterBodyLoaded(() => {
-        executeWithInterval(() => {
-            try { allowElementRecursion(document.body); } catch (error) { logError(error); } finally { }
-        }, 2000);
-    });
-    afterElementLoaded(() => {
-        executeWithInterval((mce) => {
-            try { allowElementRecursion(mce); } catch (error) { logError(error); } finally { }
-        }, 2000);
-    }, getMainContainerElement);
+    executeWithInterval(
+        (function () {
+            if (document) {
+                try { allowElement(document); } catch (error) { logError(error); } finally { }
+            }
+        }), 200
+    );
+    executeWithInterval(
+        (function () {
+            if (document && document.body) {
+                try { allowElement(document.body); } catch (error) { logError(error); } finally { }
+            }
+        }), 300
+    );
+    executeWithInterval(
+        (function () {
+            if (document && document.body) {
+                try { allowElementRecursion(document.body); } catch (error) { logError(error); } finally { }
+            }
+        }), 3000
+    );
+    executeWithInterval(
+        (function () {
+            let mce = getMainContainerElement();
+            if (document && mce) {
+                try { allowElementRecursion(mce); } catch (error) { logError(error); } finally { }
+            }
+        }), 2000
+    );
 
     // 对抗延迟运行（即在此脚本执行后运行）的混淆程序和循环执行的混淆程序，
     setTimeout(
