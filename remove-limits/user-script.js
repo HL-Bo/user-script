@@ -1,15 +1,33 @@
 // ==UserScript==
 // @name                 Remove Restrictions and Restore Default Behavior
 // @name:zh-CN           解除网页限制，恢复默认行为
+// @name:zh-TW           解除網頁限制，恢復默認行爲
+// @name:ja-JP           Webページの制限を削除し、デフォルトの動作に戻す
+// @name:ko-KR           웹 페이지 제한 제거 및 기본 동작 복원
 // @name:en-US           Remove Restrictions and Restore Default Behavior
+// @name:fr-FR           Supprimer les restrictions de page Web et restaurer le comportement par défaut
+// @name:de-DE           Entfernen von Webseiteneinschränkungen und Wiederherstellen des Standardverhaltens
+// @name:it-IT           Rimuovi le restrizioni delle pagine Web e ripristina il comportamento predefinito
+// @name:pt-BR           Remover restrições de página da Web e restaurar o comportamento padrão
+// @name:es-ES           Levantar las restricciones de la página web y restaurar el comportamiento predeterminado
+// @name:ru-RU           Снятие ограничений веб-страниц и восстановление поведения по умолчанию
 // @namespace            http://hl-bo.github.io/namespaces/user-script/remove-limits
 // @source               https://github.com/HL-Bo/user-script
 // @supportURL           https://github.com/HL-Bo/user-script/issues
-// @version              2.5
+// @version              2.6
 // @license              AGPLv3
-// @description          Allows you select, cut, copy, paste, save and open the DevTools on any website.
-// @description:zh-CN    恢复选择、剪切、复制、粘贴、保存、右键菜单和打开开发者工具的默认行为。
-// @description:en-US    Allows you select, cut, copy, paste, save and open the DevTools on any website.
+// @description          Block the anti-debugging actions of the web page and reset the processing of certain actions (e.g., select, copy, open developer tools) of the web page to the corresponding browser default behavior.
+// @description:zh-CN    阻止网页的反调试措施并将网页对部分操作（如：选择、复制、打开开发者工具）处理重置为相应的浏览器默认行为。
+// @description:zh-TW    阻止網頁的反調試措施並將網頁對部分操作（如：選擇、複製、打開開發者工具）處理重置爲相應的瀏覽器默認行爲。
+// @description:ja-JP    Web ページのアンチデバッグ アクションをブロックし、Web ページの特定のアクション (選択、コピー、開発者ツールを開くなど) の処理を対応するブラウザーの既定の動作にリセットします。
+// @description:ko-KR    웹 페이지의 디버깅 방지 작업을 차단하고 웹 페이지의 특정 작업(예: 개발자 도구 선택, 복사, 열기)의 처리를 해당 브라우저 기본 동작으로 재설정합니다.
+// @description:en-US    Block the anti-debugging actions of the web page and reset the processing of certain actions (e.g., select, copy, open developer tools) of the web page to the corresponding browser default behavior.
+// @description:fr-FR    Bloquez les actions anti-débogage de la page Web et réinitialisez le traitement de certaines actions (par exemple, sélectionner, copier, ouvrir les outils de développement) de la page Web au comportement par défaut du navigateur correspondant.
+// @description:de-DE    Blockieren Sie die Anti-Debugging-Aktionen der Webseite und setzen Sie die Verarbeitung bestimmter Aktionen (z. B. Auswählen, Kopieren, Öffnen von Entwicklertools) der Webseite auf das entsprechende Standardverhalten des Browsers zurück.
+// @description:it-IT    Blocca le azioni anti-debug della pagina Web e ripristina l'elaborazione di determinate azioni (ad esempio, seleziona, copia, apri gli strumenti di sviluppo) della pagina Web al comportamento predefinito del browser corrispondente.
+// @description:pt-BR    Bloqueie as ações antidepuração da página da Web e redefina o processamento de determinadas ações (por exemplo, selecionar, copiar, abrir ferramentas de desenvolvedor) da página da Web para o comportamento padrão do navegador correspondente.
+// @description:es-ES    Bloquear las medidas de anti - depuración de la página web y restablecer el procesamiento de la página web para algunas operaciones (como: seleccionar, copiar, abrir la herramienta del desarrollador) al comportamiento predeterminado del navegador correspondiente.
+// @description:ru-RU    Заблокируйте антиотладочные действия веб-страницы и сбросьте обработку определенных действий (например, выбор, копирование, открытие средств разработчика) веб-страницы до соответствующего поведения браузера по умолчанию.
 // @author               HL-Bo
 // @match                *://*/**
 // @exclude              *://vscode.dev
@@ -59,8 +77,15 @@
         );
     }
     if (in_frame) {
-        console.debug('Start the installation of user-script/remove-limits (IN-FRAME)');
-    } else { console.info('Start the installation of user-script/remove-limits'); }
+        console.debug(`Start the installation of user-script/remove-limits IN_FRAME(${window.location})`);
+    } else { console.info(`Start the installation of user-script/remove-limits (${window.location})`); }
+
+    let dangerous_events = ['beforecopy', 'copy', 'beforecut', 'cut', 'beforepaste', 'paste', 'selectstart', 'contextmenu', 'dragstart', 'dragenter', 'dragover', 'dragleave', 'dragend', 'drop', 'keypress', 'keydown', 'keyup', 'visibilitychange', 'mousedown', 'mouseup', 'mousewheel', 'wheel', 'mouseenter', 'mousemove', 'mouseover', 'mouseout', 'mouseleave', 'gotpointercapture', 'lostpointercapture', 'pointerdown', 'pointerrawupdate', 'pointerup', 'pointerenter', 'pointermove', 'pointerover', 'pointerout', 'pointerleave', 'pointercancel', 'focus', 'focusin', 'focusout', 'blur'];
+    let style_element_inner = '* { user-select: auto !important; -webkit-user-select: auto !important; -moz-user-select: auto !important; -ms-user-select: auto !important; }';
+    let head_style_element = document.createElement('style');
+    head_style_element.innerText = style_element_inner;
+    let body_style_element = document.createElement('style');
+    body_style_element.innerText = style_element_inner;
 
     // 尝试禁用 debugger
     // 仅在 eval('debugger') 或 setInterval('debugger', sec) 构造前执行才能阻止
@@ -80,32 +105,82 @@
     console.$rl_clear = console.clear;
     console.clear = function () { };
 
-    let logError = function (error) {
-        let error_message = error.toString();
-        if (document && document.body) {
-            if (document.body.$rl_errors) {
-                if (!document.body.$rl_errors.includes(error_message)) {
-                    if (in_frame) { console.debug(error_message); } else { console.warn(error_message); }
-                    document.body.$rl_errors.push(error_message);
-                }
-            } else { document.body.$rl_errors = new Array(); }
-        }
-    };
     let executeWithInterval = function (func, delay) {
         setTimeout(func, 0); // 异步执行，防止阻塞
         setInterval(func, delay);
     };
+    let afterElementLoaded = function (func, element_getter) {
+        if (document && element_getter()) { func(element_getter); } else {
+            window.addEventListener('load ', () => { func(element_getter()); });
+        }
+    };
+    let afterHeadLoaded = function (func) {
+        if (document && document.head) { func(); } else {
+            window.addEventListener('load ', () => { func(); });
+        }
+    };
+    let afterBodyLoaded = function (func) {
+        if (document && document.body) { func(); } else {
+            window.addEventListener('load ', () => { func(); });
+        }
+    };
+    let logError = function (error) {
+        let error_message = error.toString();
+        afterBodyLoaded(
+            () => {
+                if (document.body.$rl_errors) {
+                    if (!document.body.$rl_errors.includes(error_message)) {
+                        if (in_frame) { console.debug(error_message); } else { console.warn(error_message); }
+                        document.body.$rl_errors.push(error_message);
+                    }
+                } else { document.body.$rl_errors = new Array(); }
+            }
+        );
+    };
+    let injectStyle = function () {
+        afterHeadLoaded(() => {
+            try {
+                document.head.appendChild(head_style_element);
+            } catch (error) { logError(error); } finally { }
+        });
+        afterBodyLoaded(() => {
+            try {
+                document.body.appendChild(body_style_element);
+            } catch (error) { logError(error); } finally { }
+        });
+    };
+    /*
+    let getSelection = function () {
+      if (window.getSelection)
+        return (window.getSelection() || "").toString();
+      if (document.getSelection)
+        return (document.getSelection() || "").toString();
+      if (document.selection)
+        return document.selection.createRange().text;
+      return "";
+    };
+    */
     let setEventListener = function (element, event_name, listener) {
+        if (!element.$listen_event) {
+            element.$listen_event = element.addEventListener;
+        }
+        element.addEventListener = function (event_name, listener, options) {
+            if (event_name == dangerous_events) {
+                element.$listen_event(event_name, (event) => { event.stopPropagation(); });
+            } else {
+                element.$listen_event(event_name, listener, options);
+            }
+        };
         if (!element.$rl_lazy_events) { element.$rl_lazy_events = new Map(); }
         if (!element.$rl_events) { element.$rl_events = new Map(); }
         if (!element.$rl_lazy_events.has(event_name)) {
             element.$rl_lazy_events.set(event_name, listener);
-            element.addEventListener(event_name, listener);
+            element.$listen_event(event_name, listener);
         }
         if (!element.$rl_events.has(event_name)) {
             element.removeEventListener(event_name, element.$rl_events.get(event_name));
             element.$rl_events.set(event_name, listener);
-            element.addEventListener(event_name, listener);
+            element.$listen_event(event_name, listener);
         }
     };
     let copyEventType = function (old_event) {
@@ -134,7 +209,7 @@
         if (old_event instanceof PointerEvent) { new_event_type = PointerEvent; }
         if (old_event instanceof WheelEvent) { new_event_type = WheelEvent; }
         return new_event_type;
-    }
+    };
     let copyEventAttr = function (old_event) {
         let new_event_init_dict = {};
         new_event_init_dict.cancelable = false;
@@ -187,7 +262,7 @@
         if (old_event.dataType) { new_event_init_dict.dataType = old_event.dataType; } // ClipboardEvent
         if (old_event.data) { new_event_init_dict.data = old_event.data; } // ClipboardEvent & InputEvent & CompositionEvent
         return new_event_init_dict;
-    }
+    };
     let copyEvent = function (old_event) {
         let event_type = copyEventType(old_event);
         let event_init = copyEventAttr(old_event);
@@ -228,11 +303,10 @@
         setEventListener(element, event_name, onKeyEvents);
     };
     let preventEventChecks = function (element) {
-        let all_events = ['onbeforecopy', 'oncopy', 'onbeforecut', 'oncut', 'onbeforepaste', 'onpaste', 'onselectstart', 'oncontextmenu', 'ondragstart', 'ondragenter', 'ondragover', 'ondragleave', 'ondragend', 'ondrop', 'onkeypress', 'onkeydown', 'onkeyup', 'onvisibilitychange', 'onmousedown', 'onmouseup', 'onmousewheel', 'onwheel', 'onmouseenter', 'onmousemove', 'onmouseover', 'onmouseout', 'onmouseleave', 'ongotpointercapture', 'onlostpointercapture', 'onpointerdown', 'onpointerrawupdate', 'onpointerup', 'onpointerenter', 'onpointermove', 'onpointerover', 'onpointerout', 'onpointerleave', 'onpointercancel', 'onfocus', 'onfocusin', 'onfocusout', 'onblur'];
-        for (let i of all_events) {
-            Object.defineProperty(element, i,
+        for (let i of dangerous_events) {
+            Object.defineProperty(element, 'on' + i,
                 {
-                    get: () => { (event) => false },
+                    get: () => { return (event) => false; },
                     set: (value) => { if (value !== null) { console.debug('Prevent to set property'); } }
                 }
             );
@@ -260,10 +334,12 @@
         try { element.ondragend = null; } catch (error) { logError(error); } finally { allowEvent(element, 'dragend'); }
         // try { element.ondrop = null; } catch (error) { logError(error); } finally { allowEvent(element, 'drop'); }
         // 取消通过 CSS 实现的禁止选中
-        try { element.style.mozUserSelect = 'auto'; } catch (error) { logError(error); } finally { }
-        try { element.style.webkitUserSelect = 'auto'; } catch (error) { logError(error); } finally { }
-        try { element.style.msUserSelect = 'auto'; } catch (error) { logError(error); } finally { }
-        try { element.style.userSelect = 'auto'; } catch (error) { logError(error); } finally { }
+        if (element.style) {
+            try { element.style.mozUserSelect = 'auto'; } catch (error) { logError(error); } finally { }
+            try { element.style.webkitUserSelect = 'auto'; } catch (error) { logError(error); } finally { }
+            try { element.style.msUserSelect = 'auto'; } catch (error) { logError(error); } finally { }
+            try { element.style.userSelect = 'auto'; } catch (error) { logError(error); } finally { }
+        }
         // 取消通过 JavaScript 实现的禁用快捷键
         try { element.onkeypress = null; } catch (error) { logError(error); } finally { allowKeyEvents(element, 'keypress'); }
         try { element.onkeydown = null; } catch (error) { logError(error); } finally { allowKeyEvents(element, 'keydown'); }
@@ -301,7 +377,7 @@
         try { if (element instanceof Element && element.hasAttribute('disabled')) { element.removeAttribute('disabled'); } } catch (error) { logError(error); } finally { }
         try { if (element instanceof Element && element.hasAttribute('readonly')) { element.removeAttribute('readonly'); } } catch (error) { logError(error); } finally { }
         // 防止 JavaScript 事件检测
-        preventEventChecks(element);
+        try { preventEventChecks(element); } catch (error) { logError(error); } finally { allowEvent(element, 'focusout'); }
     };
     let allowElementRecursion = function (element) {
         allowElement(element);
@@ -367,38 +443,31 @@
     // 对抗延迟运行（即在此脚本执行后运行）的禁用程序和循环执行的禁用程序，
     executeWithInterval( // 每 0.2 秒执行一次。
         (function () {
-            if (document) {
-                try { allowElement(document); } catch (error) { logError(error); } finally { }
+            if (window) {
+                try { allowElement(window); } catch (error) { logError(error); } finally { }
             }
         }), 200
     );
-    executeWithInterval( // 每 0.3 秒执行一次。
-        (function () {
-            if (document && document.body) {
-                try { allowElement(document.body); } catch (error) { logError(error); } finally { }
-            }
-        }), 300
-    );
-    setTimeout(
-        // 延迟 2.0 秒。
-        function () {
-            executeWithInterval( // 每 5.0 秒执行一次。
-                (function () {
-                    if (document && document.body) {
-                        try { allowElementRecursion(document.body); } catch (error) { logError(error); } finally { }
-                    }
-                }), 5000
-            );
-        }, 2000
-    );
-    executeWithInterval( // 每 2.0 秒执行一次。
-        (function () {
-            let mce = getMainContainerElement();
-            if (document && mce) {
-                try { allowElementRecursion(mce); } catch (error) { logError(error); } finally { }
-            }
-        }), 2000
-    );
+    afterBodyLoaded(() => {
+        executeWithInterval(() => {
+            try { allowElement(document); } catch (error) { logError(error); } finally { }
+        }, 200);
+    });
+    afterBodyLoaded(() => {
+        executeWithInterval(() => {
+            try { allowElement(document.body); } catch (error) { logError(error); } finally { }
+        }, 300);
+    });
+    afterBodyLoaded(() => {
+        executeWithInterval(() => {
+            try { allowElementRecursion(document.body); } catch (error) { logError(error); } finally { }
+        }, 2000);
+    });
+    afterElementLoaded(() => {
+        executeWithInterval((mce) => {
+            try { allowElementRecursion(mce); } catch (error) { logError(error); } finally { }
+        }, 2000);
+    }, getMainContainerElement);
 
     // 对抗延迟运行（即在此脚本执行后运行）的混淆程序和循环执行的混淆程序，
     setTimeout(
@@ -419,6 +488,7 @@
             );
         }, 1000
     );
+    executeWithInterval(injectStyle, 500);
     /*
     // 安装 Service Worker 以过滤请求
     if ('serviceWorker' in navigator) {
@@ -436,6 +506,6 @@
     }
     */
     if (in_frame) {
-        console.debug('Complete the installation of user-script/remove-limits (IN-FRAME)');
-    } else { console.info('Complete the installation of user-script/remove-limits'); }
+        console.debug(`Complete the installation of user-script/remove-limits IN-FRAME(${window.location.href}))`);
+    } else { console.info(`Complete the installation of user-script/remove-limits (${window.location.href}))`); }
 })();

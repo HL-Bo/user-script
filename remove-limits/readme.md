@@ -31,8 +31,6 @@
 
 此脚本的存储库位于 [GitHub](https://github.com/HL-Bo/user-script)，其镜像位于 [Codeberg](https://codeberg.org/HL-Bo/user-script)。如有需要，请向位于 GitHub 上的存储库提交 [Issues](https://github.com/HL-Bo/user-script/issues) 和（或） [Pull Requests](https://github.com/HL-Bo/user-script/pulls)，镜像存储库的相关内容可能无法被及时发现、充分讨论和审查。此外，请注意存储库要求[对提交进行签名](https://docs.github.com/zh/authentication/managing-commit-signature-verification/signing-commits)。
 
-此脚本的活跃开发分支暂定为 `feature/remove-limits`，请将代码合并申请指向此分支而非 `develop` 分支。
-
 ## 授权与许可
 
 图标来自 Twitter Twemoji，参见 <https://github.com/twitter/twemoji/blob/master/assets/svg/1f4c4.svg>，使用 [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/ "知识共享公共许可协议 - 署名 4.0 国际")，作者及版权声明如下：[Copyright 2020 Twitter, Inc and other contributors](https://github.com/twitter/twemoji)
